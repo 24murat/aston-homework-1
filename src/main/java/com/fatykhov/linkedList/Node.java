@@ -1,12 +1,20 @@
 package com.fatykhov.linkedList;
 
+/**
+ * Node realization which objects contain element itself and links to the next and previous elements.
+ *
+ * @param <E> type of element
+ */
 public class Node<E> {
-    //    Node - это узел
-    E item;        // хранит объект в текущем узле
-    Node<E> next;  // хранит ссылку на следующий узел
-    Node<E> prev;  // хранит ссылку на предыдущий узел
+    E item;
+    Node<E> next;
+    Node<E> prev;
 
-
+    /**
+     * Construct node which contains transferred element.
+     *
+     * @param item which will be contained inside node
+     */
     public Node(E item) {
         this.item = item;
     }

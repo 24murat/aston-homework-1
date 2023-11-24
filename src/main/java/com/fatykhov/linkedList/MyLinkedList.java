@@ -4,17 +4,25 @@ import com.fatykhov.MyListInterface;
 
 import java.util.Iterator;
 
+/**
+ * This is my custom generalized LinkedList realization.
+ * @author Murat Fatykhov
+ *
+ * @param <E> type of elements in this linked list
+ */
 public class MyLinkedList<E> implements MyListInterface<E> {
     /**
-     * First Node of this linked list
+     * First node of this linked list.
      */
     private Node<E> head;
+
     /**
-     * Last Node of this linked list
+     * Last node of this linked list.
      */
     private Node<E> tail;
+
     /**
-     * Size of this linked list
+     * Size of this linked list.
      */
     private int size;
 
@@ -31,11 +39,10 @@ public class MyLinkedList<E> implements MyListInterface<E> {
      * @param item element to add to the beginning of this linked list
      */
     public void addFirst(E item) {
-        // Новый узел
         Node<E> temp = new Node<>(item);
 
         if (isEmpty()) {
-            tail = temp; // ? or head
+            tail = temp;
         } else {
             head.prev = temp;
         }
@@ -44,15 +51,6 @@ public class MyLinkedList<E> implements MyListInterface<E> {
         head = temp;
 
         size++;
-    }
-
-    public void print() {
-        Node temp = head;
-
-        while (temp != null) {
-            System.out.println(temp.item);
-            temp = temp.next;
-        }
     }
 
     /**
@@ -76,8 +74,8 @@ public class MyLinkedList<E> implements MyListInterface<E> {
     }
 
     /**
-     * Adds element to the transferred index of this linked list.
-     * First checks if custom index is not out of bounds.
+     * Adds element at transferred index of this linked list.
+     * Also checks if custom index is not out of bounds.
      * @see MyLinkedList#checkIndex(int)
      *
      * @param index index which is used to add the element at
@@ -85,6 +83,15 @@ public class MyLinkedList<E> implements MyListInterface<E> {
      */
     @Override
     public void add(int index, E item) {
+        Node<E> temp = new Node<>(item);
+
+        if (isEmpty()) {
+            head = temp;
+            tail = temp;
+            size++;
+            return;
+        }
+
         checkIndex(index);
 
         if (index == 0) {
@@ -92,21 +99,8 @@ public class MyLinkedList<E> implements MyListInterface<E> {
             return;
         }
 
-        Node<E> current = head;
+        Node<E> current = getNode(index);
 
-        //  Переменная c будет служить для нахождения индекса
-        int c = 0;
-
-        while (current != null && c != index) {
-            current = current.next;
-            c++;
-        }
-        //  После цикла current ссылается на ноду на место которой мы хотим вставить новую ноду
-
-        Node<E> temp = new Node<>(item);
-
-        //  current.prev.next означает, что мы берем текущую ноду, находим предыдущую ей ноду и назначаем
-        //  ей в качестве следующей - ту ноду которую мы хотим вставить
         current.prev.next = temp;
         temp.prev = current.prev;
         current.prev = temp;
@@ -115,11 +109,45 @@ public class MyLinkedList<E> implements MyListInterface<E> {
         size++;
     }
 
+    /**
+     * Returns node at transferred index from this linked list.
+     *
+     * @param index index of node to return
+     * @return node at transferred index from this linked list
+     */
+    private Node<E> getNode(int index) {
+        checkIndex(index);
 
+        Node<E> current;
 
+        if (index <= size / 2) {
+            current = head;
+            int c = 0;
+
+            while (c != index) {
+                current = current.next;
+                c++;
+            }
+        } else {
+            current = tail;
+            int c = size - 1;
+
+            while (c != index) {
+                current = current.prev;
+                c--;
+            }
+        }
+        return current;
+    }
+
+    /**
+     * Returns element at transferred index from this linked list.
+     * @param index index of element to return
+     * @return element at transferred index from this linked list
+     */
     @Override
     public E get(int index) {
-        return null;
+        return getNode(index).item;
     }
 
     /**
@@ -133,8 +161,8 @@ public class MyLinkedList<E> implements MyListInterface<E> {
         } else {
             head.next.prev = null;
         }
-
         head = head.next;
+
         size--;
     }
 
@@ -144,7 +172,7 @@ public class MyLinkedList<E> implements MyListInterface<E> {
     public void removeLast() {
         if (isEmpty()) {
             return;
-        } else if (head.next == null) { // ? or tail.prev == null
+        } else if (head.next == null) {
             head = null;
         } else {
             tail.prev.next = null;
@@ -156,10 +184,17 @@ public class MyLinkedList<E> implements MyListInterface<E> {
 
     /**
      * Removes element at transferred index from this linked list.
+     * Also checks if custom index is not out of bounds.
+     * @see MyLinkedList#checkIndex(int)
+     *
      * @param index index to remove
      */
     @Override
     public void remove(int index) {
+        if (isEmpty()) {
+            return;
+        }
+
         checkIndex(index);
 
         if (index == 0) {
@@ -167,16 +202,10 @@ public class MyLinkedList<E> implements MyListInterface<E> {
         } else if (index == size - 1) {
             removeLast();
         } else {
-            Node<E> current = head;
-            int c = 0;
-
-            while (current != null && c != index) {
-                current = current.next;
-                c++;
-            }
-
+            Node<E> current = getNode(index);
             current.prev.next = current.next;
             current.next.prev = current.prev;
+
             size--;
         }
     }
@@ -190,28 +219,70 @@ public class MyLinkedList<E> implements MyListInterface<E> {
         return size;
     }
 
-    @Override
-    public void set(int index, E item) {
-
-    }
-
     /**
-     *
-     * @return
+     * Checks if this linked list is empty.
+     * @return true if this linked list is empty
      */
     @Override
     public boolean isEmpty() {
         return head == null;
     }
 
+    /**
+     * Removes all elements from this linked list.
+     */
     @Override
     public void clear() {
-
+        while (!isEmpty()) {
+            removeFirst();
+        }
     }
 
+    /**
+     * Sorts this linked list (selection sort).
+     */
     @Override
     public void sort() {
+        for (int step = 0; step < size; step++) {
+            int minIndex = findMinElement(step);
+            swapNodes(getNode(step), getNode(minIndex));
+        }
+    }
 
+    /**
+     * Finds minimal element in this linked list when starting from transferred index.
+     *
+     * @param start index from which searching for minimal element
+     * @return index of minimal element in specified area of this linked list
+     */
+    private int findMinElement(int start) {
+        int minIndex = start;
+        E minElement = get(start);
+
+        for (int i = start + 1; i < size; i++) {
+            if (((Comparable<E>) this.get(i)).compareTo(minElement) < 0) {
+                minElement = get(i);
+                minIndex = i;
+            }
+        }
+
+        return minIndex;
+    }
+
+    /**
+     * Swaps transferred nodes.
+     *
+     * @param n1 first node
+     * @param n2 second node
+     */
+    private void swapNodes(Node<E> n1, Node<E> n2) {
+        if (n1 == null || n2 == null || n1 == n2) {
+            return;
+        }
+
+        E temp = n1.item;
+        n1.item = n2.item;
+        n2.item = temp;
     }
 
     /**
@@ -222,12 +293,15 @@ public class MyLinkedList<E> implements MyListInterface<E> {
      */
     private void checkIndex(int index) {
         if (index < 0 || index >= size)
-            throw new IndexOutOfBoundsException("index out of bounds");
+            throw new IndexOutOfBoundsException("index:" + index + " is out of bounds:" + size);
     }
 
+    /**
+     * Returns new MyLinkedListIterator object for this linked list.
+     * @return new MyLinkedListIterator object for this linked list
+     */
     @Override
     public Iterator<E> iterator() {
-        return null;
+        return new MyLinkedListIterator<>(head);
     }
-
 }
