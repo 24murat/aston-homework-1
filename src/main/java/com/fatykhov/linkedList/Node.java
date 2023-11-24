@@ -2,6 +2,7 @@ package com.fatykhov.linkedList;
 
 /**
  * Node realization which objects contain element itself and links to the next and previous elements.
+ * @author Murat Fatykhov
  *
  * @param <E> type of element
  */

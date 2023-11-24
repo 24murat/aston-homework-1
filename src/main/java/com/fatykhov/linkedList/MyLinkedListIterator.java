@@ -5,6 +5,8 @@ import java.util.NoSuchElementException;
 
 /**
  * Realization of iterator for my custom linked list.
+ * @author Murat Fatykhov
+ *
  * @param <E> type of elements in linked list
  */
 public class MyLinkedListIterator<E> implements Iterator<E> {

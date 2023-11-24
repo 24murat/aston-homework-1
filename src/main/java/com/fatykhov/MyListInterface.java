@@ -2,6 +2,8 @@ package com.fatykhov;
 
 /**
  * Common interface for my custom lists realizations.
+ * @author Murat Fatykhov
+ *
  * @param <E> type of elements in list
  */
 public interface MyListInterface<E> extends Iterable<E> {

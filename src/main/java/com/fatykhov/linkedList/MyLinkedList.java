@@ -5,7 +5,7 @@ import com.fatykhov.MyListInterface;
 import java.util.Iterator;
 
 /**
- * This is my custom generalized LinkedList realization.
+ * My custom LinkedList realization.
  * @author Murat Fatykhov
  *
  * @param <E> type of elements in this linked list

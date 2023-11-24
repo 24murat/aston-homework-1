@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 /**
- * This is my custom generalized ArrayList realization.
+ * My custom ArrayList realization.
  * @author Murat Fatykhov
  *
  * @param <E> type of elements in this array list

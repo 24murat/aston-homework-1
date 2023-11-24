@@ -6,6 +6,8 @@ import java.util.NoSuchElementException;
 
 /**
  * Realization of iterator for my custom array list.
+ * @author Murat Fatykhov
+ *
  * @param <E> type of elements in list
  */
 public class MyArrayListIterator<E> implements Iterator<E> {
