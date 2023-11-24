@@ -1,16 +1,16 @@
 package com.fatykhov.arrayList;
 
-import com.fatykhov.MyListIterator;
 import com.fatykhov.MyListInterface;
 
 import java.util.Arrays;
 import java.util.Iterator;
 
 /**
- * This is my custom ArrayList realization
+ * This is my custom generalized ArrayList realization.
  * @author Murat Fatykhov
  *
- * */
+ * @param <E> type of elements in this array list
+ */
 public class MyArrayList<E> implements MyListInterface<E> {
 
     /**
@@ -167,7 +167,6 @@ public class MyArrayList<E> implements MyListInterface<E> {
      * @param index index at which element will be replaced
      * @param item new element which will replace an old element
      */
-    @Override
     public void set(int index, E item) {
         checkIndex(index);
         list[index] = item;
@@ -223,13 +222,13 @@ public class MyArrayList<E> implements MyListInterface<E> {
 
     /**
      * Returns new MyListIterator object based on this list.
-     * @see MyListIterator
+     * @see MyArrayListIterator
      *
      * @return new MyListIterator object based on this list
      */
     @Override
     public Iterator<E> iterator() {
-        return new MyListIterator<>(Arrays.copyOf(list, size));
+        return new MyArrayListIterator<>(Arrays.copyOf(list, size));
     }
 
     /**
